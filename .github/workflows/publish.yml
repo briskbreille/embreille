@@ -1,0 +1,52 @@
+name: Publish
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+jobs:
+  build_windows:
+    uses: ./.github/workflows/build_windows.yml
+  build_macos:
+    uses: ./.github/workflows/build_macos.yml
+  build_linux:
+    uses: ./.github/workflows/build_linux.yml
+  release:
+    needs: [build_windows, build_macos, build_linux]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Download Windows build
+        uses: dawidd6/action-download-artifact@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          workflow: build_windows.yml
+          name: ${{ github.event.repository.name }}-windows
+          skip_unpack: true
+
+      - name: Download Mac OS build
+        uses: dawidd6/action-download-artifact@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          workflow: build_macos.yml
+          name: ${{ github.event.repository.name }}-macos
+          skip_unpack: true
+
+      - name: Download Linux build
+        uses: dawidd6/action-download-artifact@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          workflow: build_linux.yml
+          name: ${{ github.event.repository.name }}-linux
+          skip_unpack: true
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          files: |
+            ${{ github.workspace }}/${{ github.event.repository.name }}-windows.zip
+            ${{ github.workspace }}/${{ github.event.repository.name }}-macos.zip
+            ${{ github.workspace }}/${{ github.event.repository.name }}-linux.zip
