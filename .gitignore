@@ -13,4 +13,4 @@ imgui.ini
 .vscode
 
 # `pyinstaller`'s configuration file.
-main.spec
+*.spec
