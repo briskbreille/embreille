@@ -1,6 +1,7 @@
 current_dir:=$(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
 EXECUTABLE_NAME?=app
+VIRTUAL_ENV_POLICY?=yes
 
 REQUIREMENTS_FILE_PATH:=$(current_dir)requirements.txt
 ENTRY_FILE_PATH:=$(current_dir)main.py
@@ -12,14 +13,20 @@ PIP:=pip
 PYTHON:=python
 PYINSTALLER:=pyinstaller
 
+ifeq ($(VIRTUAL_ENV_POLICY),yes)
+ifeq ($(VIRTUAL_ENV),)
+$(error Use a virtual environment, you can circumvent this error by setting `VIRTUAL_ENV_POLICY` to `no`)
+endif
+endif
+
 default: dev
 .PHONY: default
 
-install_requirements: $(REQUIREMENTS_FILE_PATH) $(VENV_DIR)
+install_requirements: $(REQUIREMENTS_FILE_PATH)
 	$(PIP) install -r $<
 .PHONY: install_requirements
 
-update_requirements: $(VENV_DIR)
+update_requirements:
 	$(PIP) freeze > $(REQUIREMENTS_FILE_PATH)
 .PHONY: update_requirements
 
@@ -34,6 +41,3 @@ dev: install_requirements update_requirements
 build: install_requirements update_requirements
 	$(PYINSTALLER) --windowed -y --name $(EXECUTABLE_NAME) --distpath $(DIST_DIR) --workpath $(WORK_DIR) $(ENTRY_FILE_PATH)
 .PHONY: build
-
-$(VENV_DIR):
-	$(VIRTUALENV) $@

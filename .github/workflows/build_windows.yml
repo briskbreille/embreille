@@ -24,7 +24,7 @@ jobs:
           cache: "pip"
 
       - name: Build
-        run: make build EXECUTABLE_NAME=${{ github.event.repository.name }} DIST_DIR='${{ github.workspace }}\dist'
+        run: make build VIRTUAL_ENV_POLICY=no EXECUTABLE_NAME=${{ github.event.repository.name }} DIST_DIR='${{ github.workspace }}\dist'
 
       - name: Export build
         uses: actions/upload-artifact@v4
