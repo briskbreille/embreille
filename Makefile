@@ -1,6 +1,6 @@
 current_dir:=$(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
-rectify_executable=$(if $(wildcard $(1)),$(1),$(1).exe)
+EXECUTABLE_NAME?=app
 
 VENV_DIR:=$(current_dir)venv.local/
 REQUIREMENTS_FILE_PATH:=$(current_dir)requirements.txt
@@ -10,19 +10,20 @@ WORK_DIR:=$(current_dir)build/
 
 VIRTUALENV=virtualenv
 RM=rm
-PIP=$(firstword $(wildcard $(VENV_DIR)bin/pip*))
-PYINSTALLER=$(firstword $(wildcard $(VENV_DIR)bin/pyinstaller*))
-PYTHON=$(firstword $(wildcard $(VENV_DIR)bin/python*))
+
+pip=$(firstword $(wildcard $(VENV_DIR)bin/pip*))
+python=$(firstword $(wildcard $(VENV_DIR)bin/python*))
+pyinstaller=$(firstword $(wildcard $(VENV_DIR)bin/pyinstaller*))
 
 default: dev
 .PHONY: default
 
 dev: update_requirements
-	$(PYTHON) $(ENTRY_FILE_PATH)
+	$(call python) $(ENTRY_FILE_PATH)
 .PHONY: update_requirements
 
 build: install_requirements
-	$(PYINSTALLER) -y --distpath $(DIST_DIR) --workpath $(WORK_DIR) $(ENTRY_FILE_PATH)
+	$(call pyinstaller) -y --windowed --name $(EXECUTABLE_NAME) --distpath $(DIST_DIR) --workpath $(WORK_DIR) $(ENTRY_FILE_PATH)
 .PHONY: build
 
 clean:
@@ -30,11 +31,11 @@ clean:
 .PHONY: clean
 
 install_requirements: $(REQUIREMENTS_FILE_PATH) $(VENV_DIR)
-	$(PIP) install -r $<
+	$(call pip) install -r $<
 .PHONY: install_requirements
 
 update_requirements: $(VENV_DIR)
-	$(PIP) freeze > $(REQUIREMENTS_FILE_PATH)
+	$(call pip) freeze > $(REQUIREMENTS_FILE_PATH)
 .PHONY: dump_requirements
 
 $(VENV_DIR):

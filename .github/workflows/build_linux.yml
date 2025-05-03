@@ -22,7 +22,7 @@ jobs:
         run: pip install virtualenv
 
       - name: Build
-        run: make build DIST_DIR='${{ github.workspace }}/dist'
+        run: make build EXECUTABLE_NAME=${{ github.event.repository.name }} DIST_DIR='${{ github.workspace }}/dist'
 
       - name: Export build
         uses: actions/upload-artifact@v4
