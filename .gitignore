@@ -1,0 +1,10 @@
+# User's local file.
+*.local
+**/*.local
+
+# `pyinstaller`'s output.
+build
+dist
+
+# `imgui`'s persistant file.
+imgui.ini
