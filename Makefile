@@ -1,16 +1,19 @@
-current_dir := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
+current_dir:=$(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
-VENV_DIR := $(current_dir)venv.local/
-REQUIREMENTS_FILE_PATH := $(current_dir)requirements.txt
-ENTRY_FILE_PATH := $(current_dir)main.py
-DIST_DIR := $(current_dir)dist/
-WORK_DIR := $(current_dir)build/
+PATH_SEPARATOR?=/
+rectify_path_separator=$(subst /,$(PATH_SEPARATOR),$(1))
 
-VIRTUALENV ?= virtualenv
-RM ?= rm
-PIP ?= $(VENV_DIR)bin/pip
-PYINSTALLER ?= $(VENV_DIR)bin/pyinstaller
-PYTHON ?= $(VENV_DIR)bin/python
+VENV_DIR:=$(call rectify_path_separator,$(current_dir)venv.local/)
+REQUIREMENTS_FILE_PATH:=$(call rectify_path_separator,$(current_dir)requirements.txt)
+ENTRY_FILE_PATH:=$(call rectify_path_separator,$(current_dir)main.py)
+DIST_DIR:=$(call rectify_path_separator,$(current_dir)dist/)
+WORK_DIR:=$(call rectify_path_separator,$(current_dir)build/)
+
+VIRTUALENV?=virtualenv
+RM?=rm
+PIP?=$(call rectify_path_separator,$(VENV_DIR)bin/pip)
+PYINSTALLER?=$(call rectify_path_separator,$(VENV_DIR)bin/pyinstaller)
+PYTHON?=$(call rectify_path_separator,$(VENV_DIR)bin/python)
 
 default: dev
 .PHONY: default

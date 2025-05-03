@@ -19,7 +19,7 @@ jobs:
       contents: write
     steps:
       - name: Download Windows build
-        uses: dawidd6/action-download-artifact@v3
+        uses: dawidd6/action-download-artifact@v5
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           workflow: build_windows.yml
@@ -27,7 +27,7 @@ jobs:
           skip_unpack: true
 
       - name: Download Mac OS build
-        uses: dawidd6/action-download-artifact@v3
+        uses: dawidd6/action-download-artifact@v5
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           workflow: build_macos.yml
@@ -35,7 +35,7 @@ jobs:
           skip_unpack: true
 
       - name: Download Linux build
-        uses: dawidd6/action-download-artifact@v3
+        uses: dawidd6/action-download-artifact@v5
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           workflow: build_linux.yml
