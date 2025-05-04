@@ -22,7 +22,7 @@ jobs:
         uses: dawidd6/action-download-artifact@v6
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          workflow: build_windows.yml
+          workflow: publish.yml
           name: ${{ github.event.repository.name }}-windows
           skip_unpack: true
 
@@ -30,7 +30,7 @@ jobs:
         uses: dawidd6/action-download-artifact@v6
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          workflow: build_macos.yml
+          workflow: publish.yml
           name: ${{ github.event.repository.name }}-macos
           skip_unpack: true
 
@@ -38,7 +38,7 @@ jobs:
         uses: dawidd6/action-download-artifact@v6
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          workflow: build_linux.yml
+          workflow: publish.yml
           name: ${{ github.event.repository.name }}-linux
           skip_unpack: true
 
