@@ -21,9 +21,12 @@ jobs:
       - name: Build
         run: make build VIRTUAL_ENV_POLICY=no EXECUTABLE_NAME=${{ github.event.repository.name }} DIST_DIR='${{ github.workspace }}/dist'
 
+      - name: Zip build
+        run: cd ${{ github.workspace }}/dist && zip -r ../${{ github.event.repository.name }}-linux.zip ./*
+
       - name: Export build
         uses: actions/upload-artifact@v4
         with:
           name: ${{ github.event.repository.name }}-linux
-          path: ${{ github.workspace }}/dist/*
+          path: ${{ github.workspace }}/${{ github.event.repository.name }}-linux.zip
           if-no-files-found: error
