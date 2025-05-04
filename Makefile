@@ -4,7 +4,8 @@ EXECUTABLE_NAME?=app
 VIRTUAL_ENV_POLICY?=yes
 
 REQUIREMENTS_FILE_PATH:=$(current_dir)requirements.txt
-ENTRY_FILE_PATH:=$(current_dir)main.py
+SRC_DIR:=$(current_dir)src/
+ENTRY_FILE_PATH:=$(SRC_DIR)main.py
 DIST_DIR:=$(current_dir)dist/
 WORK_DIR:=$(current_dir)build/
 DATA_SOURCE_DIR:=$(current_dir)data/
