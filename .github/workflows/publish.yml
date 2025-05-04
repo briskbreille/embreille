@@ -18,29 +18,8 @@ jobs:
     permissions:
       contents: write
     steps:
-      - name: Download Windows build
-        uses: dawidd6/action-download-artifact@v6
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          workflow: publish.yml
-          name: ${{ github.event.repository.name }}-windows
-          skip_unpack: true
-
-      - name: Download Mac OS build
-        uses: dawidd6/action-download-artifact@v6
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          workflow: publish.yml
-          name: ${{ github.event.repository.name }}-macos
-          skip_unpack: true
-
-      - name: Download Linux build
-        uses: dawidd6/action-download-artifact@v6
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          workflow: publish.yml
-          name: ${{ github.event.repository.name }}-linux
-          skip_unpack: true
+      - name: Download all workflow run artifacts
+        uses: actions/download-artifact@v4
 
       - name: Release
         uses: softprops/action-gh-release@v1
