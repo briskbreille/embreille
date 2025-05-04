@@ -27,7 +27,7 @@ jobs:
         run: make build VIRTUAL_ENV_POLICY=no EXECUTABLE_NAME=${{ github.event.repository.name }} DIST_DIR='${{ github.workspace }}\dist'
 
       - name: Zip build
-        run: cd ${{ github.workspace }}\dist && zip -r ..\${{ github.event.repository.name }}-windows.zip .\*
+        run: cd ${{ github.workspace }}\dist && 7z a ..\${{ github.event.repository.name }}-windows.zip .\*
 
       - name: Export build
         uses: actions/upload-artifact@v4
