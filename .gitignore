@@ -14,3 +14,7 @@ imgui.ini
 
 # `pyinstaller`'s configuration file.
 *.spec
+
+# Mac OS's files.
+.DS_Store
+**/.DS_Store

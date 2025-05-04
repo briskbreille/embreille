@@ -1,67 +1,43 @@
 import os
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 
-from imgui.integrations.pygame import PygameRenderer
-import OpenGL.GL as gl
-import imgui
 import pygame
-import sys
+
+from pygame_gui import UIManager, UI_BUTTON_PRESSED
+from pygame_gui.elements import UIButton
 
 
 def main():
     pygame.init()
-    size = 800, 600
 
-    pygame.display.set_mode(size, pygame.DOUBLEBUF | pygame.OPENGL | pygame.RESIZABLE)
+    pygame.display.set_caption('Quick Start')
+    window_surface = pygame.display.set_mode((800, 600))
+    manager = UIManager((800, 600), 'data/themes/default_theme.json')
 
-    imgui.create_context()
-    impl = PygameRenderer()
+    background = pygame.Surface((800, 600))
+    background.fill(manager.ui_theme.get_colour('dark_bg'))
 
-    io = imgui.get_io()
-    io.display_size = size
+    hello_button = UIButton((350, 280), 'Hello')
 
-    show_custom_window = True
+    clock = pygame.time.Clock()
+    is_running = True
 
-    while 1:
+    while is_running:
+        time_delta = clock.tick(60)/1000.0
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                sys.exit(0)
-            impl.process_event(event)
-        impl.process_inputs()
+                is_running = False
+            if event.type == UI_BUTTON_PRESSED:
+                if event.ui_element == hello_button:
+                    print('Hello World!')
+            manager.process_events(event)
 
-        imgui.new_frame()
+        manager.update(time_delta)
 
-        if imgui.begin_main_menu_bar():
-            if imgui.begin_menu("File", True):
+        window_surface.blit(background, (0, 0))
+        manager.draw_ui(window_surface)
 
-                clicked_quit, selected_quit = imgui.menu_item(
-                    "Quit", "Cmd+Q", False, True
-                )
-
-                if clicked_quit:
-                    sys.exit(0)
-
-                imgui.end_menu()
-            imgui.end_main_menu_bar()
-
-        imgui.show_test_window()
-
-        if show_custom_window:
-            is_expand, show_custom_window = imgui.begin("Custom window", True)
-            if is_expand:
-                imgui.text("Bar")
-                imgui.text_colored("Eggs", 0.2, 1.0, 0.0)
-            imgui.end()
-
-        # note: cannot use screen.fill((1, 1, 1)) because pygame's screen
-        #       does not support fill() on OpenGL sufraces
-        gl.glClearColor(1, 1, 1, 1)
-        gl.glClear(gl.GL_COLOR_BUFFER_BIT)
-        imgui.render()
-        impl.render(imgui.get_draw_data())
-
-        pygame.display.flip()
-
+        pygame.display.update()
 
 if __name__ == "__main__":
     main()

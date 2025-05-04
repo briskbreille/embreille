@@ -7,6 +7,8 @@ REQUIREMENTS_FILE_PATH:=$(current_dir)requirements.txt
 ENTRY_FILE_PATH:=$(current_dir)main.py
 DIST_DIR:=$(current_dir)dist/
 WORK_DIR:=$(current_dir)build/
+DATA_SOURCE_DIR:=$(current_dir)data/
+DATA_DEST_DIR:=data/
 
 RM:=rm
 PIP:=pip
@@ -39,5 +41,5 @@ dev: install_requirements update_requirements
 .PHONY: update_requirements
 
 build: install_requirements update_requirements
-	$(PYINSTALLER) --windowed -y --name $(EXECUTABLE_NAME) --distpath $(DIST_DIR) --workpath $(WORK_DIR) $(ENTRY_FILE_PATH)
+	$(PYINSTALLER) --windowed -y --name $(EXECUTABLE_NAME) --add-data $(DATA_SOURCE_DIR):$(DATA_DEST_DIR) --distpath $(DIST_DIR) --workpath $(WORK_DIR) $(ENTRY_FILE_PATH)
 .PHONY: build
