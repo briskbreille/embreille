@@ -21,6 +21,12 @@ jobs:
       - name: Download all workflow run artifacts
         uses: actions/download-artifact@v4
 
+      - name: Zip all artifacts
+        run: |
+          cd ${{ github.workspace }}/${{ github.event.repository.name }}-windows && zip -r ../${{ github.event.repository.name }}-windows.zip ./*
+          cd ${{ github.workspace }}/${{ github.event.repository.name }}-macos && zip -r ../${{ github.event.repository.name }}-macos.zip ./*
+          cd ${{ github.workspace }}/${{ github.event.repository.name }}-linux && zip -r ../${{ github.event.repository.name }}-linux.zip ./*
+
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
